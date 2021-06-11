@@ -1,0 +1,60 @@
+<html>
+<head>
+<link href="template.css" rel="stylesheet">
+<script src="sample.js"></script>
+<title>Profile</title>
+</head>
+<body>
+	<a href="/">Homepage</a>
+	<a href="/editor">Box Editor</a>
+	<a href="/design">Designs</a>
+	<h1>Profile</h1>
+	<div class = "profileContainer">
+		<table id ="profileTable">
+			<script>
+				var currentUser = getCurrentUser();
+				if(currentUser == "no user"){
+					window.location = "/";
+				}
+				else {
+					var userId = getUserId();
+					var userInfo = getCustomerInfoById(userId);
+					var table = document.getElementById("profileTable");
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Name:";
+					cell2.innerHTML = userInfo.firstName + " " + userInfo.lastName;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Email:";
+					cell2.innerHTML = userInfo.email;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Phone:";
+					cell2.innerHTML = userInfo.phone;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Address:";
+					cell2.innerHTML = userInfo.address;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var temp = "Your Designs";
+					var designLink = temp.link("/design?userId=" + userId);
+					cell.innerHTML = designLink;
+				}
+			</script>
+			
+			
+		</table>
+	</div>
+</body>
+</html>

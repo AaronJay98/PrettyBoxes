@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Home</title>
+<link href="style.css" rel="stylesheet">
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css"/>
+<script src="sample.js"></script>
+<script src="libs/code-snippet.min.js"></script>
+<script src="libs/jquery.min.js"></script>
+<script src="libs/fabric.min.js"></script>
+<script src="js/image-editor.js"></script>
+<script src="js/image-editor.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
+</head>
+
+<style>
+body{
+    background-image: url('box_main.jpg');
+    background-size: 100% 100%;
+}
+.center {
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+padding: 10px;
+}
+.btn {
+  background-color: purple;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 250px;
+  opacity: 0.8;
+}
+
+.button1 {background-color: purple;}
+.button2 {background-color: pink;}
+.btn:hover {opacity: 1}
+
+h1 { 
+	font-size: 4em; 
+	font-family: 'Verdana';
+	color:purple;
+	text-align: center;
+}
+h3 { 
+	font-size: 2em; 
+	font-family: 'Courier New';
+	text-align: center;
+}
+</style>
+
+<body>
+    <div class="center">
+		<h1>PrettyBoxes</h1>
+		<h3><em>Create and Design boxes</em></h3>
+		<a href="/editor"><button class = "btn button1">Box Editor</button></a>
+		<a href="/design"><button class = "btn button1">Designs</button></a>
+		<a href="/cart"><button class = "btn button1">Cart</button></a>
+		<div id = "signup">
+		<a href="/login"><button class = "btn button2">Sign in</button></a>
+		<a href="/signup"><button class = "btn button2">Sign up</button></a>
+		</div>
+		<div id = "logout" style="display: none">
+		<form action="/logout" id="succ" method=post>
+   			 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
+		<button form = "succ" class = "btn button2">Log out</button>
+		<a href="/profile"><button class = "btn button2">Profile</button></a>
+		</div>
+	</div>
+	<script>
+		var list = getCurrentUser();
+		if(list != "no user"){
+			document.getElementById('logout').style.display= 'block';
+			document.getElementById('signup').style.display= 'none';
+		}
+	</script>
+</body>
+</html>

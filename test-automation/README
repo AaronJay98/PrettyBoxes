@@ -1,0 +1,11 @@
+TESTING BACKEND APIS WITH POSTMAN:
+1. Launch Postman
+2. Got to file->import
+3. Drag and drop/select Sprint 5 Test Automation.postman_collection.json
+4. Run each test
+
+TESTING FRONTEND WITH SELENIUM
+1. Launch java IDE with selenium jar installed
+2. Import Selenium folder as a project
+3. On line 10, change directory to where chromedriver.exe is on your machine
+4. Run SeleniumTests

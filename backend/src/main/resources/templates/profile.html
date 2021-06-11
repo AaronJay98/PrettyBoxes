@@ -1,0 +1,147 @@
+<html>
+<head>
+<link href="template.css" rel="stylesheet">
+<script src="sample.js"></script>
+<title>Profile</title>
+</head>
+<body>
+	<body class="profile-page">
+	<h1>Profile</h1>
+	<!--top layout navigation-->
+	<div class="sidenav">
+		<a href="/">Homepage</a>
+		<a href="/editor">Box Editor</a>
+		<a href="/design">Designs</a>
+		<a href="/cart">Cart</a>
+		<div id = "signup">
+		<a href="/login" class="account">Sign in</a>
+		<a href="/signup" class="account">Sign up</a>
+		</div>
+		<div id = "logout" style="display: none">		
+		<a href="/profile" class="account">Profile</a>
+		<a href="/logout" form = "succ" class="account">Log out</a>
+		</div>
+		<script>
+		var list = getCurrentUser();
+		if(list != "no user"){
+			document.getElementById('logout').style.display= 'block';
+			document.getElementById('signup').style.display= 'none';
+		}
+		</script>
+	</div>
+	
+	
+	<!--studio button-->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+			integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+			crossorigin="anonymous"></script>
+	<div class = "profileContainer" id = "profileContainer">
+		<table id ="profileTable">
+			<style>
+				.profileContainer {
+					padding: 20px 20px 20px 20px;
+				    height: auto;
+				    width: 1340px;
+				    margin: auto;
+				    margin-left: 220px;
+				    background-color: whitesmoke;
+				}
+				#profileTable {
+					padding: 20px 20px 20px 20px;
+					border-collapse: collapse;
+					border: solid 5px grey;
+				    font-size: 25px;
+				    border-spacing: 16px;
+				    height: auto;
+				    margin: auto;
+				    width: 1300px;
+				    background-color: whitesmoke;
+				}
+				tr { border-top: solid 2px black; }
+				tr:first-child { border: none; }
+			</style>
+			<script>
+				var currentUser = getCurrentUser();
+				if(currentUser == "no user"){
+					window.location = "/";
+				}
+				else {
+					var userId = getUserId();
+					var userInfo = getCustomerInfoById(userId);
+					var table = document.getElementById("profileTable");
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Name:";
+					cell2.innerHTML = userInfo.firstName + " " + userInfo.lastName;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Email:";
+					cell2.innerHTML = userInfo.email;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Phone:";
+					cell2.innerHTML = userInfo.phone;
+					
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1)
+					cell.innerHTML = "Address:";
+					cell2.innerHTML = userInfo.address;
+				}
+				function goToMyDesigns(){
+					window.location = "/design?userId=" + getUserId();
+				}
+			</script>
+		</table>
+		<h1><a id = "link" href="#" onclick = goToMyDesigns()>Your Designs</a></h1>
+		<script>
+			var carts = getCarts();
+			var ordersTable = document.getElementById("ordersTable");
+			if (carts.length != 1){
+				document.getElementById("profileContainer").innerHTML += "<h1>Your Orders</h1>";
+			}
+		</script>
+		<table id ="ordersTable">
+			<style>
+				#ordersTable {
+					padding: 20px 20px 20px 20px;
+					border-collapse: collapse;
+					border: solid 5px grey;
+				    font-size: 25px;
+				    border-spacing: 16px;
+				    height: auto;
+				    margin: auto;
+				    width: 1300px;
+				    background-color: whitesmoke;
+				}
+				tr { border-top: solid 2px black; }
+				tr:first-child { border: none; }
+			</style>
+			<script>
+				var carts = getCarts();
+				var ordersTable = document.getElementById("ordersTable");
+				for (let i = 0; i < carts.length; i++){
+					var isActive = carts[i].isActive;
+					if (isActive == 0){
+						var cartId = carts[i].id;
+						var row = ordersTable.insertRow(-1);
+						var cell = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						
+						var orderNum = "Order #" + i;
+						var linkToOrder = orderNum.link("/orders?cartId=" + cartId);
+						cell.innerHTML = linkToOrder;
+					}
+				}
+			</script>
+		</table>
+	</div>
+</body>
+</html>

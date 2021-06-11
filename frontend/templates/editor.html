@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Box Editor</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="sample.js"></script>
+        <link type="text/css" href="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.css" rel="stylesheet">
+        <link href="template.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.css">
+        <style>
+            @import url(http://fonts.googleapis.com/css?family=Noto+Sans);
+            html, body {
+            	background-color: #151515;
+                height: 97%;
+                margin: 0;
+            }
+          	a:link{
+    margin-right: 10px;
+	color: white;
+}
+.tui-image-editor-container .tui-image-editor-menu > .tui-image-editor-item,
+.tui-image-editor-container .tui-image-editor-help-menu > .tui-image-editor-item {
+  padding: 1px 8px 3px 8px;
+}
+
+
+        </style>
+    </head>
+    <body>
+    <form action="/logout" id="succ" method=post>
+   		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <a class="navbar-brand" href="/">Pretty Boxes</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary" href="/" role="button">Homepage</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary active" href="/editor" role="button">Box Editor</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary" href="/design" role="button">Designs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary" href="/cart" role="button">Cart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-primary" href="/profile" role="button">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link btn btn-info" href="javascript:{}" onclick="document.getElementById('succ').submit();">Logout</a>
+      </li>
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <button type="button" id = "save" class="btn btn-warning" onclick="saveBlob()">Save Design</button>
+      </li>
+    </ul>
+      </div>
+</nav>
+ 
+
+
+    <div id="tui-image-editor-container"></div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+        <script type="text/javascript" src="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+        <script src="https://uicdn.toast.com/tui-image-editor/latest/tui-image-editor.js"></script>
+        <!-- <script type="text/javascript" src="./js/theme/white-theme.js"></script>
+        <script type="text/javascript" src="./js/theme/black-theme.js"></script> -->
+        <script>
+         // Image editor
+         var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
+             includeUI: {
+                 loadImage: {
+                     path: 'white.jpg',
+                     name: 'white',
+                 },
+                //  theme: blackTheme, // or whiteTheme
+                 initMenu: 'filter',
+                 menuBarPosition: 'bottom'
+             },
+             cssMaxWidth: 700,
+             cssMaxHeight: 600,
+             usageStatistics: false
+         });
+         window.onresize = function() {
+             imageEditor.ui.resizeEditor();
+         }
+         
+        function imageToBlob(){
+        	var arr = imageEditor.toDataURL().split(','), mime = arr[0].match(/:(.*?);/)[1],
+             	bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        	while(n--){
+             	u8arr[n] = bstr.charCodeAt(n);
+        	}
+        	return new Blob([u8arr], {type:mime});
+        }
+        
+        function saveBlob(){
+        	var formData = new FormData();
+        	var blob = imageToBlob();
+        	var userId = getUserId();
+        	formData.append("imageBlob", blob)
+        	formData.append("userId", userId);
+        	var xhr = new XMLHttpRequest();
+        	xhr.open('POST', "/design/save", true);
+        	xhr.send(formData);
+        	alert("Image Successfully Saved!")
+        	window.location = "/design";
+        } 
+        </script>
+        
+    </body>
+</html>

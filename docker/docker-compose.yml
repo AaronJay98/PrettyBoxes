@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD={ROOT PASSWORD}
+      - MYSQL_DATABASE=prettyboxes
+      - MYSQL_USER=springuser
+      - MYSQL_PASSWORD=Password!
+    volumes:
+      - /data/mysql
+    ports:
+    - 3333:3306
+    container_name: prettyboxes-db
+    
+  prettyboxes-app:
+    image: prettyboxes-image
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    volumes:
+      - /data/spring-boot-app
+    container_name: prettyboxes-app

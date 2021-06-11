@@ -1,0 +1,79 @@
+<html>
+<head>
+<link href="template.css" rel="stylesheet">
+<script src="sample.js"></script>
+<title>Order</title>
+</head>
+<body>
+	<div class="sidenav">
+		<a href="/">Homepage</a>
+		<a href="/editor">Box Editor</a>
+		<a href="/design">Designs</a>
+		<a href="/cart">Cart</a>
+		<div id = "signup">
+		<a href="/login" class="account">Sign in</a>
+		<a href="/signup" class="account">Sign up</a>
+		</div>
+		<div id = "logout" style="display: none">		
+		<a href="/profile" class="account">Profile</a>
+		<a href="/logout" form = "succ" class="account">Log out</a>
+		</div>
+		<script>
+		var list = getCurrentUser();
+		if(list != "no user"){
+			document.getElementById('logout').style.display= 'block';
+			document.getElementById('signup').style.display= 'none';
+		}
+		</script>
+	</div>
+
+	<h2>Order</h2>
+	<div class = "cartContainer">
+		<table id ="cartTable">
+			<style>
+				table { border-collapse: collapse; }
+				tr { border-top: solid 2px black; }
+				tr:first-child { border: none; }
+			</style>
+			<script>
+				var userId = getUserId();
+				var table = document.getElementById("cartTable");
+				
+				var cartId = -1;
+				if (window.location.href.indexOf("?cartId=") != -1){
+					cartId = window.location.href.substring(window.location.href.indexOf("?cartId=") + 8)
+				}
+				if (cartId == -1){
+					window.location = "/";
+				}
+				else {
+					var row = table.insertRow(-1);
+					var cell = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					
+					cell.innerHTML = "Design";
+					cell2.innerHTML = "Quantity";
+					
+					var orders = getOrders(cartId);
+					for (let i = 0; i < orders.length; i++){
+						var row = table.insertRow(-1);
+						var cell = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						
+						var designId = orders[i].designId;
+						var design = getDesign(designId).image;
+						var imageUrl = "data:image/png;base64," + design;
+						var image = new Image(192, 108);
+						image.src = imageUrl;
+						cell.appendChild(image);
+						cell2.innerHTML = orders[i].quantity;
+						
+						
+					}
+				}
+			</script>
+		</table>
+	</div>
+</body>
+</html>
